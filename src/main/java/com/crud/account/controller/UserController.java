@@ -3,6 +3,7 @@ package com.crud.account.controller;
 import com.crud.account.error.RecordNotFoundException;
 import com.crud.account.model.User;
 import com.crud.account.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +27,29 @@ public class UserController {
 
     // Add Users
     // http://localhost:8080/add-user
+//    @PostMapping("/add-user")
+//    public ResponseEntity<User> addUser(@RequestBody @Valid User user) {
+//        System.out.println("User Added");
+//        User newUser = service.save(user);
+//        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+//    }
+
+
     @PostMapping("/add-user")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<?> addUser(@RequestBody @Valid User user) {
         System.out.println("User Added");
-        User newUser = service.save(user);
-        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+        if (!service.isValidBankNo(user.getAccountNumber())) {
+            return new ResponseEntity<String>("Please Enter Valid Account Number", HttpStatus.NOT_FOUND);
+        }else {
+            User newUser = service.save(user);
+            return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+        }
     }
 
     // GET Single User
     // http://localhost:8080/user/1
     @GetMapping(path = "/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getUser(@PathVariable("id") Integer id) {
         Optional<User> user = service.findById(id);
         if (!user.isPresent()) {
             throw new RecordNotFoundException("User " + id + " not found.");
@@ -49,14 +62,14 @@ public class UserController {
     // Update User
     // http://localhost:8080/update-user/{id}
     @PutMapping(path = "/update-user/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable("id") Integer id) {
+    public User updateUser(@RequestBody @Valid User user, @PathVariable("id") Integer id) {
         return service.updateUserById(user, id);
     }
 
     // Patch - partial update specific column
     // http://localhost:8080/patch-user/{id}
     @PatchMapping(path = "/patch-user/{id}")
-    public ResponseEntity<User> updateUserAmountorName(@RequestBody User user, @PathVariable("id") Integer id) {
+    public ResponseEntity<User> updateUserAmountorName(@RequestBody @Valid User user, @PathVariable("id") Integer id) {
 
         Optional<User> currentUser = service.findById(id);
         User updateUserData = new User();

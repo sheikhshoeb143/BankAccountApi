@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -68,5 +70,41 @@ public class UserService {
     public String deleteAll() {
         repo.deleteAll();
         return "All records deleted";
+    }
+
+    public boolean isValidBankNo(String bankAccNo){
+        String regex = "^\\d{10}$";
+        Pattern p = Pattern.compile(regex);
+        if (bankAccNo == null){
+            return false;
+        }
+        Matcher m = p.matcher(bankAccNo);
+        if (m.matches())
+            return true;
+        return false;
+    }
+
+    public boolean isValidName(String fullName){
+        String regex = "^[A-Za-z\\\\s]+$";
+        Pattern p = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
+        if (fullName == null){
+            return false;
+        }
+        Matcher m = p.matcher(fullName);
+        if (m.matches())
+            return true;
+        return false;
+    }
+
+    public boolean isValidIfscCode(String ifscCode) {
+        String regex = "^[A-Z]{4}0[A-Z0-9]{6}$";
+        Pattern p = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
+        if (ifscCode == null){
+            return false;
+        }
+        Matcher m = p.matcher(ifscCode);
+        if (m.matches())
+            return true;
+        return false;
     }
 }
