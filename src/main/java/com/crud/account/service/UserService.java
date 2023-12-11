@@ -1,7 +1,6 @@
 package com.crud.account.service;
 
 
-import com.crud.account.error.RecordNotFoundException;
 import com.crud.account.model.User;
 import com.crud.account.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,6 @@ public class UserService {
         return repo.save(user);
     }
 
-//    private String validateAccount(String accountNumber) {
-//        if((accountNumber != null && accountNumber !="") || (accountNumber.length() < 10 && accountNumber.length() > 12)){
-//            return "Account Number Should be between 10 to 12";
-//        }
-//        else{
-//            return "User Added";
-//        }
-//    }
 
     public Optional<User> findById(Integer id) {
         return repo.findById(id);
@@ -84,27 +75,4 @@ public class UserService {
         return false;
     }
 
-    public boolean isValidName(String fullName){
-        String regex = "^[A-Za-z\\\\s]+$";
-        Pattern p = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
-        if (fullName == null){
-            return false;
-        }
-        Matcher m = p.matcher(fullName);
-        if (m.matches())
-            return true;
-        return false;
-    }
-
-    public boolean isValidIfscCode(String ifscCode) {
-        String regex = "^[A-Z]{4}0[A-Z0-9]{6}$";
-        Pattern p = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
-        if (ifscCode == null){
-            return false;
-        }
-        Matcher m = p.matcher(ifscCode);
-        if (m.matches())
-            return true;
-        return false;
-    }
 }

@@ -4,6 +4,7 @@ import com.crud.account.error.RecordNotFoundException;
 import com.crud.account.model.User;
 import com.crud.account.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -26,6 +26,11 @@ class AccountApplicationTests {
 	private UserRepository repository;
 
 
+
+	@Test
+	void contextLoads() {
+	}
+
 	@Test
 	public void findAllTest(){
 		when(repository.findAll()).thenReturn(Stream.of(new User(1, "Sheikh Shoeb", "KA", "SBI", "SBIN0007065", "Current", "20288091922", "6000"), new User(2, "Ashu", "CG", "ICICI", "ICIC07065", "Savings", "70288091922", "60000")).collect(Collectors.toList()));
