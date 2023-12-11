@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class UserService {
 
+    //@Autowired
     private final UserRepository repo;
 
     public List<User> findAll() {
