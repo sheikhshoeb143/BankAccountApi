@@ -3,6 +3,7 @@ package com.crud.account.service;
 
 import com.crud.account.model.User;
 import com.crud.account.repo.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@AllArgsConstructor
 public class UserService {
-    @Autowired
-    UserRepository repo;
+
+    private final UserRepository repo;
 
     public List<User> findAll() {
         return repo.findAll();
