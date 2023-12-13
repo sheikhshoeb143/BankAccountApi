@@ -1,5 +1,6 @@
 package com.crud.account.controller;
 
+import com.crud.account.error.RecordNotFoundException;
 import com.crud.account.model.User;
 import com.crud.account.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -81,5 +83,51 @@ public class ControllerTest {
 
         // Assert
         assertEquals(new ResponseEntity<User>(user, HttpStatus.FOUND), result);
+    }
+
+
+    @Test
+    public void testDeleteAll() {
+        // Arrange
+        when(userService.deleteAll()).thenReturn("All records deleted");
+
+        // Act
+        String result = userController.deleteAll();
+
+        // Assert
+        assertEquals("All records deleted", result);
+        verify(userService, times(1)).deleteAll();
+    }
+
+
+    //Delete By Id
+    @Test
+    public void testDeleteUser() {
+        // Arrange
+        Integer userId = 1;
+        when(userService.checkUserExists(userId)).thenReturn(true);
+
+        // Act
+        ResponseEntity<String> result = userController.deleteUser(userId);
+
+        // Assert
+        assertEquals(new ResponseEntity<String>("User 1 deleted successfully", HttpStatus.OK), result);
+        verify(userService, times(1)).checkUserExists(userId);
+        verify(userService, times(1)).deleteUserById(userId);
+    }
+
+    @Test
+    public void testDeleteUserNotFound() {
+        // Arrange
+        Integer userId = 1;
+        when(userService.checkUserExists(userId)).thenReturn(false);
+
+        // Act and Assert
+        assertThrows(RecordNotFoundException.class, () -> {
+            userController.deleteUser(userId);
+        });
+
+        verify(userService, times(1)).checkUserExists(userId);
+        verify(userService, never()).deleteUserById(any());
     }
 }
