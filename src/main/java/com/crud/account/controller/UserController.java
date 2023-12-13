@@ -14,10 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+//@AllArgsConstructor
 public class UserController {
-    //@Autowired
-    private final UserService service;
+    @Autowired
+    UserService service;
+    //private final UserService service;
 
     // Get all users
     // http://localhost:8080/user

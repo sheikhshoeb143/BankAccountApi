@@ -13,11 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 public class UserService {
 
-    //@Autowired
-    private final UserRepository repo;
+    @Autowired
+    UserRepository repo;
+    //private final UserRepository repo;
 
     public List<User> findAll() {
         return repo.findAll();
